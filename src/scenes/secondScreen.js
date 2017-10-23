@@ -18,7 +18,7 @@ export default class App extends Component {
         return (
             <View style={styles.container}>
                 <TouchableOpacity onPress={() => this.onPressText()}>
-                    <Text style={{color: 'black'}}>SecondScreen...</Text>
+                    <Text style={{color: 'black'}}>jansVy...</Text>
                 </TouchableOpacity>
             </View>
         );
