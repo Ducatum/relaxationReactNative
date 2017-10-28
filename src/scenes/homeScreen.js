@@ -29,7 +29,7 @@ export default class App extends Component {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.menuItemView}>
-                    <TouchableOpacity onPress={() => this.onPressText()}>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate("WakeUp")}>
                         <Text style={{color: 'black'}}>Program vakna</Text>
                     </TouchableOpacity>
                 </View>

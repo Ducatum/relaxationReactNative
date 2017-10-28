@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
 import StyleFactory from '../style';
+
 import {
     StyleSheet,
     Text,
     View,
     TouchableOpacity,
+    Image
 } from 'react-native';
 
 let theme = StyleFactory.getTheme();
@@ -19,7 +21,7 @@ export default class App extends Component {
         return (
             <View style={styles.container}>
                 <TouchableOpacity onPress={() => this.onPressText()}>
-                    <Text style={{color: 'black'}}>SecondScreen...</Text>
+                    <Image style={{width: theme.screenWidth, height: theme.screenHeight}} source={require('../../assets/img/png/wakeup-design-portrait-1-no-status-bar.png')} />
                 </TouchableOpacity>
             </View>
         );
