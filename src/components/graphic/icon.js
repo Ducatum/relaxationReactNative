@@ -5,7 +5,7 @@ import React, {Component} from 'react';
 import GClef from './icons/gClef'
 import Calculator from './icons/calculator';
 import GClefCustom from './icons/gClefCustom'
-import SpeachBubble from './icons/speachBubble';
+import SpeechBubble from './icons/speechBubble';
 
 
 export class Icon extends Component {
@@ -21,8 +21,8 @@ export class Icon extends Component {
                 return <GClef size={this.props.size}/>;
             case 'g-clef-custom':
                 return <GClefCustom size={this.props.size}/>;
-            case 'speach-bubble':
-                return <SpeachBubble size={this.props.size}/>;
+            case 'speech-bubble':
+                return <SpeechBubble size={this.props.size}/>;
 
             default:
                 console.log('Could not find icon named ' + this.props.icon + ', check for typos');

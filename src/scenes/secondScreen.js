@@ -7,7 +7,8 @@ import {
     Text,
     View,
     TouchableOpacity,
-    Image
+    Image,
+    Slider,
 } from 'react-native';
 let theme = StyleFactory.getTheme();
 
@@ -15,10 +16,27 @@ export default class App extends Component {
 
     whoosh;
     whoosh2;
+    imageBundles;
+    currentPicNr = 0;
 
     constructor(){
         super();
-        this.state = {musicPlaying: false, music2: false};
+
+        this.imageBundles = [require('../../assets/img/png/yoga-position-1.png'), require('../../assets/img/png/yoga-position-2.png'),
+            require('../../assets/img/png/yoga-position-3.png'), require('../../assets/img/png/yoga-position-4.png')];
+
+        this.state = {
+            musicPlaying: false,
+            music2: false,
+            volume: 0.5,
+            currentPic: this.imageBundles[0],
+        };
+
+        setInterval( () => {
+            this.currentPicNr =  (this.currentPicNr + 1) % 4;
+            this.setState({currentPic: this.imageBundles[this.currentPicNr]});
+            }, 5000);
+
         this.whoosh = new Sound('rodrigoamarante.mp3', Sound.MAIN_BUNDLE, (error) => {
             if (error) {
                 console.log('failed to load the sound', error);
@@ -28,7 +46,7 @@ export default class App extends Component {
             console.log('duration in seconds: ' + this.whoosh.getDuration() + 'number of channels: ' + this.whoosh.getNumberOfChannels());
         });
 
-        this.whoosh2 = new Sound('smwpowerup.wav', Sound.MAIN_BUNDLE, (error) => {
+        this.whoosh2 = new Sound('juicy.mp3', Sound.MAIN_BUNDLE, (error) => {
             if (error) {
                 console.log('failed to load the sound', error);
                 return;
@@ -53,20 +71,48 @@ export default class App extends Component {
     }
 
     render() {
+        const iconSize = 50;
         return (
             <View style={styles.container}>
-                <View style={{flex: 2}}>
-                    <Image style={{width: theme.screenWidth}} resizeMode='contain' source={require('../../assets/img/png/yoga-position.png')} />
+                <View style={{flex: 1, justifyContent: 'center'}}>
+                    <Text style={styles.descriptionText}>{text[this.currentPicNr]}</Text>
                 </View>
-                <View style={{paddingLeft: 40, paddingRight: 40, flex: 1, flexDirection: 'row',
-                    width: theme.screenWidth, justifyContent: 'space-between',
-                    alignItems: 'center'}}>
-                    <TouchableOpacity onPress={() => this.onPlayMusic()}>
-                        <Icon icon={'g-clef-custom'} size={80}/>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.onPlay2()}>
-                        <Icon icon={'speach-bubble'} size={80}/>
-                    </TouchableOpacity>
+                <View style={{flex: 1, justifyContent: 'center'}}>
+                    <Image style={{width: theme.screenWidth}} resizeMode='contain' source={this.state.currentPic} />
+                </View>
+                <View style={{flex: 1, flexDirection: 'row', width: theme.screenWidth}}>
+                    <View style={{flex: 1, justifyContent:'center', alignItems: 'center'}}>
+                        <TouchableOpacity onPress={() => this.onPlayMusic()}>
+                            <Icon icon={'g-clef-custom'} size={iconSize}/>
+                        </TouchableOpacity>
+                        <Slider
+                            style={{ width: iconSize * 2.5}}
+                            thumbTintColor={'black'}
+                            maximumTrackTintColor={'black'}
+                            step={0.01}
+                            minimumValue={0}
+                            maximumValue={1}
+                            value={this.state.volume}
+                            onValueChange={val => this.whoosh.setVolume(val)}
+                            //onSlidingComplete={ val => this.getVal(val)}
+                        />
+                    </View>
+                    <View style={{flex: 1, justifyContent:'center', alignItems: 'center'}}>
+                        <TouchableOpacity onPress={() => this.onPlay2()}>
+                            <Icon icon={'speech-bubble'} size={iconSize}/>
+                        </TouchableOpacity>
+                        <Slider
+                            style={{ width: iconSize * 2.5 }}
+                            thumbTintColor={'black'}
+                            maximumTrackTintColor={'black'}
+                            step={0.01}
+                            minimumValue={0}
+                            maximumValue={1}
+                            value={this.state.volume}
+                            onValueChange={val => this.whoosh2.setVolume(val)}
+                            //onSlidingComplete={ val => this.getVal(val)}
+                        />
+                    </View>
                 </View>
             </View>
         );
@@ -80,4 +126,20 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: 'white',
     },
+    descriptionText: {
+        fontSize: 12,
+    }
 });
+
+const text = ['Ligg på rygg, lägg händerna på magen å bli medveten om din andning och hur kroppen känns idag\n' +
+'andas in och ut genom näsan \n' +
+'tänk dig att andningen går in genom näsan följer ryggraden ner till magen\n' +
+'känn rörelsen av andningen \n' +
+'magen höjer sig vid inandning och sänker sig vid utandning\n' +
+'var medveten om andningen under hela passet\n', 'böj höger ben\n' +
+'ta tag om knät med båda händerna \n' +
+'tryck knät mot bröstet \n' +
+'andas några djupa andetag \n', 'vinkla knät åt höger sida \n' +
+'tryck ner det mot madrassen\n' +
+'å andas djupt \n', 'för tillbaka knät mot bröstet\n' +
+'håll om det och tryck det ner mot bröstet \n'];
